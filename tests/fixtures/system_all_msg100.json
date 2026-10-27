@@ -1,0 +1,81 @@
+{
+ "all": {
+  "system": {
+   "hardware": {
+    "type": "msg100",
+    "subType": "us",
+    "version": "4.0.0",
+    "chipType": "MT7686",
+    "uuid": "000000000000000000000000a11ce005",
+    "macAddress": "aa:bb:cc:00:00:04"
+   },
+   "firmware": {
+    "version": "4.2.20",
+    "homekitVersion": "2.0.1",
+    "compileTime": "Dec 31 2024 10:45:32",
+    "encrypt": 1,
+    "wifiMac": "aa:bb:cc:00:00:05",
+    "innerIp": "192.168.1.23",
+    "server": "mqtt-ap-v2.meross.com",
+    "port": 443,
+    "userId": 1000001
+   },
+   "time": {
+    "timestamp": 1792199122,
+    "timezone": "Australia/Sydney",
+    "timeRule": [
+     [
+      1712419200,
+      36000,
+      0
+     ],
+     [
+      1728144000,
+      39600,
+      1
+     ]
+    ]
+   },
+   "online": {
+    "status": 1,
+    "bindId": "REDACTEDBINDID00",
+    "who": 1
+   }
+  },
+  "digest": {
+   "togglex": [
+    {
+     "channel": 0,
+     "onoff": 0,
+     "lmTime": 0
+    }
+   ],
+   "triggerx": [
+    {
+     "channel": 0,
+     "id": "0000000000000000",
+     "count": 1
+    }
+   ],
+   "timerx": [
+    {
+     "channel": 0,
+     "id": "0000000000000000",
+     "count": 1
+    },
+    {
+     "channel": 0,
+     "id": "0000000000000000",
+     "count": 1
+    }
+   ],
+   "garageDoor": [
+    {
+     "channel": 0,
+     "open": 0,
+     "lmTime": 0
+    }
+   ]
+  }
+ }
+}

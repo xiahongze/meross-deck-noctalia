@@ -1,0 +1,74 @@
+{
+ "all": {
+  "system": {
+   "hardware": {
+    "type": "msl610",
+    "subType": "un",
+    "version": "4.0.0",
+    "chipType": "MT7686",
+    "uuid": "000000000000000000000000a11ce000",
+    "macAddress": "aa:bb:cc:00:00:00"
+   },
+   "firmware": {
+    "version": "4.2.2",
+    "homekitVersion": "2.0.1",
+    "compileTime": "Oct 23 2021 17:19:46",
+    "encrypt": 1,
+    "wifiMac": "aa:bb:cc:00:00:01",
+    "innerIp": "192.168.1.21",
+    "server": "mqtt-ap-v2.meross.com",
+    "port": 443,
+    "userId": 1000001
+   },
+   "time": {
+    "timestamp": 1792199121,
+    "timezone": "Australia/Sydney",
+    "timeRule": [
+     [
+      1712419200,
+      36000,
+      0
+     ],
+     [
+      1728144000,
+      39600,
+      1
+     ]
+    ]
+   },
+   "online": {
+    "status": 1,
+    "bindId": "REDACTEDBINDID00",
+    "who": 1
+   }
+  },
+  "digest": {
+   "togglex": [
+    {
+     "channel": 0,
+     "onoff": 0,
+     "lmTime": 1792188942
+    }
+   ],
+   "triggerx": [],
+   "timerx": [
+    {
+     "channel": 0,
+     "id": "0000000000000000",
+     "count": 2
+    },
+    {
+     "channel": 0,
+     "id": "0000000000000000",
+     "count": 2
+    }
+   ],
+   "light": {
+    "capacity": 6,
+    "channel": 0,
+    "temperature": 75,
+    "luminance": 80
+   }
+  }
+ }
+}

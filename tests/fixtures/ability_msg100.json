@@ -1,0 +1,47 @@
+{
+ "payloadVersion": 1,
+ "ability": {
+  "Appliance.Config.Key": {},
+  "Appliance.Config.WifiList": {},
+  "Appliance.Config.Wifi": {},
+  "Appliance.Config.WifiX": {},
+  "Appliance.Config.Trace": {},
+  "Appliance.Config.Info": {},
+  "Appliance.System.All": {},
+  "Appliance.System.Hardware": {},
+  "Appliance.System.Firmware": {},
+  "Appliance.System.Debug": {},
+  "Appliance.System.Online": {},
+  "Appliance.System.Time": {},
+  "Appliance.System.Clock": {},
+  "Appliance.System.Ability": {},
+  "Appliance.System.Runtime": {},
+  "Appliance.System.Report": {},
+  "Appliance.System.Position": {},
+  "Appliance.System.DNDMode": {},
+  "Appliance.Control.Multiple": {
+   "maxCmdNum": 5
+  },
+  "Appliance.Control.ToggleX": {},
+  "Appliance.Control.TimerX": {
+   "sunOffsetSupport": 1,
+   "notify": [
+    "Appliance.GarageDoor.State"
+   ]
+  },
+  "Appliance.Control.TriggerX": {
+   "notify": [
+    "Appliance.GarageDoor.State"
+   ]
+  },
+  "Appliance.Control.Bind": {},
+  "Appliance.Control.Unbind": {},
+  "Appliance.Control.Upgrade": {},
+  "Appliance.GarageDoor.State": {},
+  "Appliance.GarageDoor.Config": {},
+  "Appliance.Digest.TriggerX": {},
+  "Appliance.Digest.TimerX": {},
+  "Appliance.Config.NtpSite": {},
+  "Appliance.Control.ChangeWiFi": {}
+ }
+}

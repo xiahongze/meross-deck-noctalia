@@ -1,0 +1,123 @@
+{
+ "ok": true,
+ "devices": [
+  {
+   "uuid": "000000000000000000000000a11ce005",
+   "name": "Garage Door Left",
+   "type": "msg100",
+   "kind": "garage",
+   "online": true,
+   "channels": [
+    {
+     "channel": 0,
+     "kind": "door",
+     "name": "Garage Door Left",
+     "open": false,
+     "lmTime": 0,
+     "obstruction": false,
+     "openMs": 12000,
+     "closeMs": 12000
+    }
+   ],
+   "ip": "192.168.1.23",
+   "route": "lan",
+   "stale": false,
+   "seenAt": 1792199000
+  },
+  {
+   "uuid": "000000000000000000000000a11ce006",
+   "name": "Garage Door Right",
+   "type": "msg100",
+   "kind": "garage",
+   "online": true,
+   "channels": [
+    {
+     "channel": 0,
+     "kind": "door",
+     "name": "Garage Door Right",
+     "open": false,
+     "lmTime": 0,
+     "obstruction": false,
+     "openMs": 12000,
+     "closeMs": 12000
+    }
+   ],
+   "ip": "192.168.1.23",
+   "route": "lan",
+   "stale": false,
+   "seenAt": 1792199000
+  },
+  {
+   "uuid": "000000000000000000000000a11ce000",
+   "name": "Smart Floor Lamp",
+   "type": "msl610",
+   "kind": "light",
+   "online": true,
+   "channels": [
+    {
+     "channel": 0,
+     "kind": "light",
+     "name": "Smart Floor Lamp",
+     "on": false,
+     "capacity": 6,
+     "luminance": 80,
+     "temperature": 75
+    }
+   ],
+   "ip": "192.168.1.21",
+   "route": "lan",
+   "stale": false,
+   "seenAt": 1792199000
+  },
+  {
+   "uuid": "000000000000000000000000a11ce002",
+   "name": "Smart Plug",
+   "type": "mss210p",
+   "kind": "plug",
+   "online": false,
+   "channels": [],
+   "ip": "",
+   "route": "",
+   "stale": true,
+   "seenAt": 1792199000
+  },
+  {
+   "uuid": "000000000000000000000000a11ce003",
+   "name": "Smart Plug",
+   "type": "mss210p",
+   "kind": "plug",
+   "online": false,
+   "channels": [],
+   "ip": "",
+   "route": "",
+   "stale": true,
+   "seenAt": 1792199000
+  },
+  {
+   "uuid": "000000000000000000000000a11ce001",
+   "name": "Smart Wi-Fi Plug",
+   "type": "mss210p",
+   "kind": "plug",
+   "online": false,
+   "channels": [],
+   "ip": "",
+   "route": "",
+   "stale": true,
+   "seenAt": 1792199000
+  },
+  {
+   "uuid": "000000000000000000000000a11ce004",
+   "name": "Smart Wi-Fi Plug 电脑",
+   "type": "mss210p",
+   "kind": "plug",
+   "online": false,
+   "channels": [],
+   "ip": "",
+   "route": "",
+   "stale": true,
+   "seenAt": 1792199000
+  }
+ ],
+ "generatedAt": 1792199000,
+ "account": "me@example.com"
+}

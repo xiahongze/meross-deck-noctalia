@@ -1,0 +1,142 @@
+[
+ {
+  "uuid": "000000000000000000000000a11ce004",
+  "onlineStatus": 2,
+  "devName": "Smart Wi-Fi Plug 电脑",
+  "devIconId": "device_mss210p_cn",
+  "bindTime": 1759474317,
+  "deviceType": "mss210p",
+  "subType": "cn",
+  "channels": [
+   {}
+  ],
+  "region": "us",
+  "fmwareVersion": "7.3.17",
+  "hdwareVersion": "7.0.0",
+  "userDevIcon": "",
+  "iconType": 1,
+  "domain": "mqtt-ap-v2.meross.com",
+  "reservedDomain": "mqtt-ap-v2.meross.com",
+  "hardwareCapabilities": []
+ },
+ {
+  "uuid": "000000000000000000000000a11ce002",
+  "onlineStatus": 2,
+  "devName": "Smart Plug",
+  "devIconId": "device_mss210p_cn",
+  "bindTime": 1735015603,
+  "deviceType": "mss210p",
+  "subType": "cn",
+  "channels": [
+   {}
+  ],
+  "region": "us",
+  "fmwareVersion": "7.3.17",
+  "hdwareVersion": "7.0.0",
+  "userDevIcon": "",
+  "iconType": 1,
+  "domain": "mqtt-ap-v2.meross.com",
+  "reservedDomain": "mqtt-ap-v2.meross.com",
+  "hardwareCapabilities": []
+ },
+ {
+  "uuid": "000000000000000000000000a11ce005",
+  "onlineStatus": 1,
+  "devName": "Garage Door Left",
+  "devIconId": "device039_un",
+  "bindTime": 1724918390,
+  "deviceType": "msg100",
+  "subType": "us",
+  "channels": [
+   {}
+  ],
+  "region": "us",
+  "fmwareVersion": "4.2.20",
+  "hdwareVersion": "4.0.0",
+  "userDevIcon": "",
+  "iconType": 1,
+  "domain": "mqtt-ap-v2.meross.com",
+  "reservedDomain": "mqtt-ap-v2.meross.com",
+  "hardwareCapabilities": []
+ },
+ {
+  "uuid": "000000000000000000000000a11ce006",
+  "onlineStatus": 1,
+  "devName": "Garage Door Right",
+  "devIconId": "device039_un",
+  "bindTime": 1724031240,
+  "deviceType": "msg100",
+  "subType": "us",
+  "channels": [
+   {}
+  ],
+  "region": "us",
+  "fmwareVersion": "4.2.20",
+  "hdwareVersion": "4.0.0",
+  "userDevIcon": "",
+  "iconType": 1,
+  "domain": "mqtt-ap-v2.meross.com",
+  "reservedDomain": "mqtt-ap-v2.meross.com",
+  "hardwareCapabilities": []
+ },
+ {
+  "uuid": "000000000000000000000000a11ce001",
+  "onlineStatus": 2,
+  "devName": "Smart Wi-Fi Plug",
+  "devIconId": "device_mss210p_cn",
+  "bindTime": 1722163832,
+  "deviceType": "mss210p",
+  "subType": "cn",
+  "channels": [
+   {}
+  ],
+  "region": "us",
+  "fmwareVersion": "7.3.7",
+  "hdwareVersion": "7.0.0",
+  "userDevIcon": "",
+  "iconType": 1,
+  "domain": "mqtt-ap-v2.meross.com",
+  "reservedDomain": "mqtt-ap-v2.meross.com",
+  "hardwareCapabilities": []
+ },
+ {
+  "uuid": "000000000000000000000000a11ce003",
+  "onlineStatus": 2,
+  "devName": "Smart Plug",
+  "devIconId": "device_mss210p_cn",
+  "bindTime": 1759835077,
+  "deviceType": "mss210p",
+  "subType": "cn",
+  "channels": [
+   {}
+  ],
+  "region": "us",
+  "fmwareVersion": "7.3.17",
+  "hdwareVersion": "7.0.0",
+  "userDevIcon": "",
+  "iconType": 1,
+  "domain": "mqtt-ap-v2.meross.com",
+  "reservedDomain": "mqtt-ap-v2.meross.com",
+  "hardwareCapabilities": []
+ },
+ {
+  "uuid": "000000000000000000000000a11ce000",
+  "onlineStatus": 1,
+  "devName": "Smart Floor Lamp",
+  "devIconId": "device_msl610_un",
+  "bindTime": 1759475173,
+  "deviceType": "msl610",
+  "subType": "un",
+  "channels": [
+   {}
+  ],
+  "region": "us",
+  "fmwareVersion": "4.2.2",
+  "hdwareVersion": "4.0.0",
+  "userDevIcon": "",
+  "iconType": 1,
+  "domain": "mqtt-ap-v2.meross.com",
+  "reservedDomain": "mqtt-ap-v2.meross.com",
+  "hardwareCapabilities": []
+ }
+]
