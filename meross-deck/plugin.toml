@@ -1,0 +1,59 @@
+id = "xiahongze/meross-deck"
+name = "Meross Deck"
+version = "0.1.0"
+plugin_api = 24
+author = "Hongze Xia"
+license = "MIT"
+icon = "smart-home"
+description = "Control Meross garage doors, lights and plugs"
+tags = ["home", "devices"]
+dependencies = ["python3"]
+
+[[setting]]
+key = "title"
+type = "string"
+label_key = "settings.title"
+default = "Home"
+
+[[setting]]
+key = "transport"
+type = "select"
+label_key = "settings.transport"
+default = "auto"
+options = [{ value = "auto", label_key = "settings.auto" }, { value = "lan", label_key = "settings.lan" }, { value = "cloud", label_key = "settings.cloud" }]
+
+[[setting]]
+key = "interval"
+type = "int"
+label_key = "settings.interval"
+default = 10
+min = 5
+max = 300
+
+[[setting]]
+key = "cloud_interval"
+type = "int"
+label_key = "settings.cloud_interval"
+default = 60
+min = 30
+max = 900
+
+[[service]]
+id = "devices"
+entry = "service.luau"
+
+[[widget]]
+id = "bar"
+entry = "bar.luau"
+
+[[desktop_widget]]
+id = "desktop"
+entry = "desktop.luau"
+
+[[panel]]
+id = "panel"
+entry = "panel.luau"
+placement = "attached"
+open_near_click = true
+width = 480
+height = 740

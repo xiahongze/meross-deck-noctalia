@@ -1,0 +1,9 @@
+{
+  "settings.title": "Title",
+  "settings.transport": "Connection",
+  "settings.auto": "Local first, cloud when away",
+  "settings.lan": "Local network only",
+  "settings.cloud": "Cloud only",
+  "settings.interval": "Local refresh interval (seconds)",
+  "settings.cloud_interval": "Cloud refresh interval (seconds)"
+}

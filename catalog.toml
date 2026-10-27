@@ -1,0 +1,11 @@
+[[plugin]]
+id = "xiahongze/meross-deck"
+name = "Meross Deck"
+version = "0.1.0"
+author = "Hongze Xia"
+license = "MIT"
+icon = "smart-home"
+description = "Control Meross garage doors, lights and plugs"
+plugin_api = 24
+tags = ["home", "devices"]
+dependencies = ["python3"]
