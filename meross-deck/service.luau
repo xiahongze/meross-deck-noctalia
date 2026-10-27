@@ -4,6 +4,7 @@ local errorKind, lastError, busy, nextPoll, generation = "", "", false, 0, 0
 local interval, cloudInterval, transport = 10, 60, "auto"
 local queue, pending, motion, settled, doorPending = {}, {}, {}, {}, {}
 local forceNext = false
+local activeRequest, requestSerial = nil, 0
 
 local function shown()
   local out = model.copy(devices)
@@ -27,7 +28,7 @@ local function configure()
   cloudInterval = math.max(30, tonumber(noctalia.getConfig("cloud_interval")) or 60)
   transport = noctalia.getConfig("transport") or "auto"
   devices, account, lastUpdated, failures, errorKind, lastError = {}, "", 0, 0, "", ""
-  busy, queue, pending, motion, settled, doorPending, nextPoll, forceNext = false, {}, {}, {}, {}, {}, 0, false
+  busy, queue, pending, motion, settled, doorPending, nextPoll, forceNext, activeRequest = false, {}, {}, {}, {}, {}, 0, false, nil
   publish()
 end
 local function flags(args)
@@ -35,23 +36,30 @@ local function flags(args)
   elseif transport == "cloud" then table.insert(args, "--cloud-only") end
   return args
 end
+local function shellQuote(value)
+  return "\x27" .. tostring(value):gsub("\x27", "\x27\\\x27\x27") .. "\x27"
+end
 local function run(args, done)
   local dir = noctalia.pluginDir()
   if not dir or dir == "" then done(false, {kind = "setup", error = "Plugin directory unavailable"}); return end
   local argv = {"python3", dir .. "/bridge.py"}
   for _, arg in ipairs(args) do table.insert(argv, tostring(arg)) end
+  local quoted = {}; for _, arg in ipairs(argv) do table.insert(quoted, shellQuote(arg)) end
+  requestSerial = requestSerial + 1
+  local id, g = requestSerial, generation
   busy = true
-  local g = generation
-  local accepted = noctalia.runAsync(argv, function(result)
-    if g ~= generation then return end
-    busy = false
-    local obj = not result.stdoutTruncated and noctalia.json.decode(result.stdout or "") or nil
-    if result.timedOut then done(false, {kind = "network", error = "The request timed out; refresh before retrying"})
-    elseif result.exitCode ~= 0 or type(obj) ~= "table" or obj.ok ~= true then
-      done(false, {kind = type(obj) == "table" and obj.kind or "network", error = type(obj) == "table" and obj.error or "Meross helper failed"})
-    else done(true, obj) end
+  local function finish(ok, value)
+    if g ~= generation or not activeRequest or activeRequest.id ~= id then return end
+    activeRequest = nil; busy = false; done(ok, value)
+  end
+  activeRequest = {id = id, deadline = os.time() + 90, finish = finish}
+  local accepted = noctalia.runStream(table.concat(quoted, " "), function(line)
+    local obj = noctalia.json.decode(line or "")
+    if type(obj) ~= "table" then finish(false, {kind = "network", error = "Unreadable Meross helper output"})
+    elseif obj.ok ~= true then finish(false, {kind = obj.kind or "network", error = obj.error or "Meross helper failed"})
+    else finish(true, obj) end
   end)
-  if not accepted then busy = false; done(false, {kind = "setup", error = "Could not start the Meross helper"}) end
+  if not accepted then finish(false, {kind = "setup", error = "Could not start the Meross helper"}) end
 end
 local function reconcile()
   for key, edit in pairs(pending) do
@@ -102,11 +110,11 @@ pump = function()
   end
   local key = model.key(cmd.uuid, cmd.channel)
   if not model.validCommand(devices, cmd) or (cmd.kind == "door" and os.time() > cmd.expires) then
-    if cmd.kind == "door" then doorPending[key] = nil else pending[key] = nil end
+    if cmd.kind == "door" then doorPending[key] = nil elseif pending[key] and pending[key].serial == cmd.serial then pending[key] = nil end
     lastError = cmd.kind == "door" and "Door request expired or its state changed. Check it and try again." or "Device is no longer available. Refresh and try again."
     publish(); pump(); return
   end
-  local payload = noctalia.json.encode({uuid = cmd.uuid, kind = cmd.kind, channel = cmd.channel, value = cmd.value})
+  local payload = noctalia.json.encode({uuid = cmd.uuid, kind = cmd.kind, channel = cmd.channel, value = cmd.value, expires = cmd.expires})
   if not payload then lastError = "Could not encode the command"; pending[key] = nil; doorPending[key] = nil; publish(); pump(); return end
   run(flags({"set-json", payload}), function(ok, result)
     if cmd.kind == "door" then doorPending[key] = nil end
@@ -124,6 +132,9 @@ pump = function()
   end)
 end
 function update()
+  if activeRequest and os.time() >= activeRequest.deadline then
+    activeRequest.finish(false, {kind = "network", error = "The request timed out; refresh before retrying"})
+  end
   local expired = false
   for key, value in pairs(motion) do
     if os.time() >= value.untilTime then motion[key] = nil; settled[key] = os.time(); expired = true end
@@ -142,7 +153,7 @@ noctalia.state.watch("command", function(cmd)
   if not cmd or lastUpdated == 0 or failures >= 3 or errorKind == "auth" or errorKind == "setup" or not model.validCommand(devices, cmd) then return end
   if cmd.kind == "door" then
     local key = model.key(cmd.uuid, cmd.channel)
-    if motion[key] or doorPending[key] or type(cmd.expires) ~= "number" or os.time() > cmd.expires or cmd.expires > os.time() + 6 then return end
+    if motion[key] or doorPending[key] or type(cmd.expires) ~= "number" or not (cmd.expires >= os.time() and cmd.expires <= os.time() + 6) then return end
     doorPending[key] = true
   else
     local values = cmd.kind == "switch" and {on = cmd.value} or {[cmd.kind] = cmd.value, on = true}

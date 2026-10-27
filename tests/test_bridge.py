@@ -6,6 +6,7 @@ import pathlib
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -17,15 +18,27 @@ spec.loader.exec_module(bridge)
 
 class BridgeTests(unittest.TestCase):
     def test_checked_commands_reject_unsafe_values(self):
-        request = {"uuid": "unit", "kind": "door", "channel": 0, "value": True}
+        request = {"uuid": "unit", "kind": "door", "channel": 0, "value": True, "expires": int(time.time()) + 6}
         self.assertEqual(json.loads(base64.b64decode(bridge.checked_request(json.dumps(request)))), request)
         for field, bad in (("kind", "garage"), ("channel", -1), ("channel", True), ("value", "false"), ("uuid", "")):
             item = dict(request, **{field: bad})
             with self.subTest(field=field, bad=bad), self.assertRaises(ValueError):
                 bridge.checked_request(json.dumps(item))
+        with self.assertRaises(ValueError):
+            bridge.checked_request(json.dumps(dict(request, expires=int(time.time()) - 1)))
+        for expiry in (float("nan"), float("inf"), int(time.time()) + 60):
+            with self.assertRaises(ValueError):
+                bridge.checked_request(json.dumps(dict(request, expires=expiry)))
         for value in (0, 101, 1.1, True):
             with self.assertRaises(ValueError):
                 bridge.checked_request(json.dumps({"uuid": "unit", "kind": "luminance", "channel": 0, "value": value}))
+
+    def test_distinct_mqtt_client_id_is_persistent_and_private(self):
+        with tempfile.TemporaryDirectory() as folder:
+            first = bridge.client_id(folder)
+            self.assertEqual(len(first), 32)
+            self.assertEqual(bridge.client_id(folder), first)
+            self.assertEqual((pathlib.Path(folder) / "mqtt-client-id").stat().st_mode & 0o777, 0o600)
 
     def test_reuses_session_without_copying_and_seeds_isolated_cache(self):
         with tempfile.TemporaryDirectory() as temp:
