@@ -7,7 +7,7 @@ test:
 	python3 tests/test_metadata.py
 lint:
 	python3 -m compileall -q meross-deck tests
-	noctalia plugins lint meross-deck
+	@if command -v noctalia >/dev/null; then noctalia plugins lint meross-deck; else echo 'Noctalia unavailable; skipping plugin lint'; fi
 	@set -e; for f in meross-deck/*.luau; do luac -p "$$f"; done
 package:
 	./scripts/package.sh

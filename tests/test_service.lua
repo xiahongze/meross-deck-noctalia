@@ -54,4 +54,9 @@ calls[7].cb("auth")
 assert(shared.status.signedOut and not shared.status.online)
 now = 200; update(); assert(#calls == 7) -- signed-out services stop polling
 watchers.refresh({serial = 9}); assert(#calls == 8)
+calls[8].cb("poll")
+now = 210; update(); assert(#calls == 9)
+watchers.command({uuid = "lamp", channel = 0, kind = "switch", value = true, serial = 10})
+now = 226; calls[9].cb("poll")
+assert(#calls == 9 and shared.status.error:find("expired", 1, true)) -- no late switch after a slow poll
 print("service and garage safety: ok")

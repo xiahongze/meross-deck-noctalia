@@ -1,0 +1,21 @@
+name: Release
+on:
+  push:
+    tags: ["v*"]
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y lua5.4 python3 make
+      - run: make test
+      - name: Verify tag matches manifest
+        run: test "v$(python3 -c 'import tomllib; print(tomllib.load(open("meross-deck/plugin.toml", "rb"))["version"])')" = "$GITHUB_REF_NAME"
+      - run: make package
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist/meross-deck-noctalia.tar.gz
+          generate_release_notes: true
+          prerelease: ${{ startsWith(github.ref_name, 'v0.') }}

@@ -1,0 +1,17 @@
+name: CI
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y lua5.4 python3 make
+      - run: make test
+      - run: make lint
+      - run: make package
+      - uses: actions/upload-artifact@v4
+        with:
+          name: meross-deck-noctalia
+          path: dist/meross-deck-noctalia.tar.gz

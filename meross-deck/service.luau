@@ -109,9 +109,9 @@ pump = function()
     return
   end
   local key = model.key(cmd.uuid, cmd.channel)
-  if not model.validCommand(devices, cmd) or (cmd.kind == "door" and os.time() > cmd.expires) then
+  if not model.validCommand(devices, cmd) or os.time() > cmd.expires then
     if cmd.kind == "door" then doorPending[key] = nil elseif pending[key] and pending[key].serial == cmd.serial then pending[key] = nil end
-    lastError = cmd.kind == "door" and "Door request expired or its state changed. Check it and try again." or "Device is no longer available. Refresh and try again."
+    lastError = cmd.kind == "door" and "Door request expired or its state changed. Check it and try again." or "Request expired or the device went offline. Refresh and try again."
     publish(); pump(); return
   end
   local payload = noctalia.json.encode({uuid = cmd.uuid, kind = cmd.kind, channel = cmd.channel, value = cmd.value, expires = cmd.expires})
@@ -156,6 +156,7 @@ noctalia.state.watch("command", function(cmd)
     if motion[key] or doorPending[key] or type(cmd.expires) ~= "number" or not (cmd.expires >= os.time() and cmd.expires <= os.time() + 6) then return end
     doorPending[key] = true
   else
+    cmd.expires = os.time() + 15
     local values = cmd.kind == "switch" and {on = cmd.value} or {[cmd.kind] = cmd.value, on = true}
     pending[model.key(cmd.uuid, cmd.channel)] = {uuid = cmd.uuid, channel = cmd.channel, values = values, expires = os.time() + 15, serial = cmd.serial}
   end

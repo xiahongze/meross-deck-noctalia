@@ -29,6 +29,8 @@ class BridgeTests(unittest.TestCase):
         for expiry in (float("nan"), float("inf"), int(time.time()) + 60):
             with self.assertRaises(ValueError):
                 bridge.checked_request(json.dumps(dict(request, expires=expiry)))
+        with self.assertRaises(ValueError):
+            bridge.checked_request(json.dumps({"uuid": "unit", "kind": "switch", "channel": 0, "value": True, "expires": int(time.time()) - 1}))
         for value in (0, 101, 1.1, True):
             with self.assertRaises(ValueError):
                 bridge.checked_request(json.dumps({"uuid": "unit", "kind": "luminance", "channel": 0, "value": value}))

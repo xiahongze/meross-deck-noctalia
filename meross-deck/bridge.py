@@ -24,10 +24,11 @@ def checked_request(raw):
         raise ValueError("Unsupported command")
     if isinstance(channel, bool) or not isinstance(channel, int) or not 0 <= channel <= 255:
         raise ValueError("Invalid channel")
-    if kind == "door":
-        expiry = request.get("expires")
-        if isinstance(expiry, bool) or not isinstance(expiry, (int, float)) or not math.isfinite(expiry) or not int(time.time()) <= expiry <= int(time.time()) + 6:
-            raise ValueError("Door confirmation expired; check the door and try again")
+    expiry = request.get("expires")
+    if kind == "door" or expiry is not None:
+        max_wait = 6 if kind == "door" else 15
+        if isinstance(expiry, bool) or not isinstance(expiry, (int, float)) or not math.isfinite(expiry) or not int(time.time()) <= expiry <= int(time.time()) + max_wait:
+            raise ValueError("Command expired; check the device state and try again")
     if kind in ("door", "switch") and not isinstance(value, bool):
         raise ValueError("Expected an on/off value")
     if kind in ("luminance", "temperature") and (isinstance(value, bool) or not isinstance(value, int) or not 1 <= value <= 100):
