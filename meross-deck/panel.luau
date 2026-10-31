@@ -7,9 +7,9 @@ local function label(text, size, color)
   return ui.label({text = tostring(text or ""), fontSize = size or 13, color = color or "on_surface"})
 end
 local function row(children) return ui.row({gap = 8, align = "center"}, children) end
-local function card(children) return ui.column({gap = 8, padding = 14, radius = 16, fill = "on_surface/0.06"}, children) end
+local function card(children, padding) return ui.column({gap = 8, padding = padding or 14, radius = 16, fill = "on_surface/0.06"}, children) end
 local function button(text, action, selected, enabled)
-  return ui.button({text = text, variant = selected and "primary" or "secondary", controlSize = "sm", enabled = enabled ~= false, onClick = action})
+  return ui.button({text = text, variant = selected and "primary" or "outline", selected = selected == true, controlSize = "sm", enabled = enabled ~= false, onClick = action})
 end
 local function send(uuid, channel, kind, value, expires)
   if not status or not status.online then return end
@@ -35,9 +35,17 @@ local function doorCard(device, channel)
   local enabled = canUse(device, channel) and type(channel.open) == "boolean" and not ((status.motion or {})[key]) and not ((status.doorPending or {})[key])
   local moving = channel and (status.motion or {})[key]
   local description = (not channel or type(channel.open) ~= "boolean") and "No door state available" or device.stale and "Unavailable · last known state" or moving and ((moving.open and "Opening" or "Closing") .. " · " .. tostring(math.max(0, moving.untilTime - os.time())) .. "s") or channel.open and "Open" or "Closed"
-  local children = {row({ui.glyph({name = "door", size = 22, color = channel and channel.open and "error" or "primary"}), label(channel and channel.name or device.name, 15), ui.spacer({flexGrow = 1}), label(description, 12, channel and channel.open and "error" or "on_surface/0.65")})}
+  local confirming = confirmation and confirmation.key == key and confirmation.untilTime > os.time() and enabled
+  local header = {ui.glyph({name = "door", size = 22, color = channel and channel.open and "error" or "primary"}), label(channel and channel.name or device.name, 15), ui.spacer({flexGrow = 1}), label(description, 12, channel and channel.open and "error" or "on_surface/0.65")}
+  if not confirming then
+    table.insert(header, button(channel and channel.open and "Close" or "Open", function()
+      if not enabled then return end
+      confirmation = {key = key, value = not channel.open, untilTime = os.time() + 6}; render()
+    end, false, enabled))
+  end
+  local children = {row(header)}
   if channel and channel.obstruction then table.insert(children, label("Obstruction reported", 12, "error")) end
-  if confirmation and confirmation.key == key and confirmation.untilTime > os.time() and enabled then
+  if confirming then
     local requested = confirmation.value
     table.insert(children, row({label(requested and "Open this door?" or "Close this door?", 13), ui.spacer({flexGrow = 1}),
       button("Cancel", function() confirmation = nil; render() end),
@@ -51,13 +59,8 @@ local function doorCard(device, channel)
         end
         render()
       end, true, enabled)}))
-  else
-    table.insert(children, row({ui.spacer({flexGrow = 1}), button(channel and channel.open and "Close" or "Open", function()
-      if not enabled then return end
-      confirmation = {key = key, value = not channel.open, untilTime = os.time() + 6}; render()
-    end, false, enabled)}))
   end
-  return card(children)
+  return card(children, 10)
 end
 local function levelControl(device, channel, field, text)
   local id = model.key(device.uuid, channel.channel) .. ":" .. field

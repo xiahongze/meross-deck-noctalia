@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Make the selected page visibly distinct from idle buttons.
+- Compact garage door cards with the action beside the status.
+
 ## 0.1.0
 
 - Native Noctalia panel, bar widget and desktop tile for Meross devices.

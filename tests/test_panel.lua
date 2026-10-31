@@ -25,6 +25,12 @@ local function find(node, pred)
 end
 local function named(text) return assert(find(tree, function(n) return n.props.text == text end), "missing " .. text) end
 assert(named("Garage") and named("Offline: Offline plug"))
+-- Selected and idle buttons must differ by variant: the theme's secondary colour matches primary.
+assert(named("Home").props.variant == "primary" and named("Home").props.selected == true)
+assert(named("Devices").props.variant == "outline" and named("Devices").props.selected == false)
+-- The door action sits in the header row, keeping the card compact.
+local doorRow = find(tree, function(n) return n.kind == "row" and #n.children > 0 and n.children[#n.children].props.text == "Open" end)
+assert(doorRow and doorRow.children[2].props.text == "Garage")
 named("Open").props.onClick(); assert(not shared.command and named("Open door"))
 named("Cancel").props.onClick(); assert(not shared.command and named("Open"))
 named("Open").props.onClick(); local delayed = named("Open door").props.onClick
