@@ -4,6 +4,7 @@
 
 - Make the selected page visibly distinct from idle buttons.
 - Compact garage door cards with the action beside the status.
+- Shorten the panel to 520px; the device list scrolls when it needs more room.
 
 ## 0.1.0
 

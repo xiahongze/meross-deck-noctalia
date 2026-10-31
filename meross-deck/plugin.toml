@@ -56,4 +56,4 @@ entry = "panel.luau"
 placement = "attached"
 open_near_click = true
 width = 480
-height = 740
+height = 520
