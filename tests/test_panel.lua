@@ -26,7 +26,8 @@ end
 local function named(text) return assert(find(tree, function(n) return n.props.text == text end), "missing " .. text) end
 assert(named("Garage") and named("Offline: Offline plug"))
 -- Selected and idle buttons must differ by variant: the theme's secondary colour matches primary.
-assert(named("Home").props.variant == "primary" and named("Home").props.selected == true)
+local homeTab = assert(find(tree, function(n) return n.kind == "button" and n.props.text == "Home" end))
+assert(homeTab.props.variant == "primary" and homeTab.props.selected == true)
 assert(named("Devices").props.variant == "outline" and named("Devices").props.selected == false)
 -- The door action sits in the header row, keeping the card compact.
 local doorRow = find(tree, function(n) return n.kind == "row" and #n.children > 0 and n.children[#n.children].props.text == "Open" end)
